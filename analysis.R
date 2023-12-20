@@ -9,10 +9,9 @@ library(gt)
 library(RColorBrewer)
 
 
+#### Data Set-Up
 
 dta <- read_dta("data/Final_Main.dta")
-
-
 dd <- read_csv("data/ddrevisited_data_v1.csv")
 
 dd <- dd |> 
@@ -32,6 +31,8 @@ dta <- dta |>
          CivDict = as.numeric(regime == 3),
          MilDict = as.numeric(regime == 4),
          RoyalDict = as.numeric(regime == 5))
+
+#### Descriptive Statistics Table
 
 table1 <- dta |> 
   select(
@@ -65,13 +66,13 @@ table1 <- dta |>
     name,
     new_empinxavg = "CIRI Human Empowerment Index Score (4-Year Average)",
     polity2avg = "Polity IV Score (4-Year Average)",
-    ParliDem = "Parliamentary Democracy (Lead 4 Years)",
-    MixedDem = "Mixed (semi-presidential) Democracy (Lead 4 Years)",
-    PresDem = "Presidential Democracy (Lead 4 Years)",
-    CivDict = "Civilian Dictatorship (Lead 4 Years)",
-    MilDict = "Military Dictatorship (Lead 4 Years)",
-    RoyalDict = "Royal Dictatorship (Lead 4 Years)",
-    EV = "EU Aid",
+    ParliDem = "Parliamentary Democracy (4 Years Lead)",
+    MixedDem = "Mixed (semi-presidential) Democracy (4 Years Lead)",
+    PresDem = "Presidential Democracy (4 Years Lead)",
+    CivDict = "Civilian Dictatorship (4 Years Lead)",
+    MilDict = "Military Dictatorship (4 Years Lead)",
+    RoyalDict = "Royal Dictatorship (4 Years Lead)",
+    EV = "EU Aid (millions of log once-lagged dollars)",
     l2CPcol2 = "Twice Lagged Former Colony Status",
     covihme_ayem = "Average Years Education (Male)",
     covwdi_exp = "Log Exports",
@@ -90,6 +91,11 @@ table1 <- dta |>
   fmt_number(columns = c(mean, sd)) |> 
   fmt_integer(columns = n) |> 
   tab_style(style = cell_text(weight = "bold"), locations = cells_row_groups())
+
+gtsave(table1, file = "tables/table1.png")
+
+
+#### Figure
 
 dta <- dta |> 
   mutate(regime = factor(regime))
@@ -119,7 +125,7 @@ ggplot(dta_count, aes(x = year, y = count, fill = factor(regime))) +
        fill = "Regime Type") +
   theme_minimal()
 
-gtsave(table1, file = "tables/table1.png")
+#### Regression Models
 
 fit1 <- feols(new_empinxavg ~ 1 | ccode + year | EV ~ l2CPcol2, data = dta)
 fit2 <- feols(polity2avg ~ 1 | ccode + year | EV ~ l2CPcol2, data = dta)
@@ -146,7 +152,7 @@ model1 <- modelsummary(
   ),
   gof_map = c("nobs", "FE: ccode", "FE: year"),
   output = "gt") |> 
-  gtsave("tables/model1.png")
+  gtsave("models/model1.png")
 
 
 
@@ -182,12 +188,12 @@ model2 <- modelsummary(
     "Military Dictatorship (Lead 4 Years)" = fit15,
     "Royal Dictatorship (Lead 4 Years)" = fit16
   ),
-  coef_rename = c(
+  gof_map = c("nobs", "FE: ccode", "FE: year", ""),
+    coef_rename = c(
     "fit_EV" = "EU Aid"
   ),
-  gof_map = c("nobs", "FE: ccode", "FE: year", ""),
   coef_omit = "cov",
   output = "gt"
   )|> 
-  gtsave("tables/model2.png")
+  gtsave("models/model2.png")
 

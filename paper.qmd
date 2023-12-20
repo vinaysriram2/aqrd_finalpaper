@@ -1,0 +1,81 @@
+---
+title: "Foreign Aid, Human Rights, and Regime"
+author: "Vinay Sriram"
+format:
+  pdf:
+    fontsize: 12pt
+    margin-left: 1.5in
+    margin-right: 1.5in
+    margin-bottom: 1.2in
+    margin-top: 1.2in
+    keep-tex: true
+    fig-pos: 'tbp'
+    tbl-pos: 'tbp'
+    include-in-header: header.tex
+bibliography: bibliography.bib
+abstract: | 
+  Recent studies have argued that foreign aid can promote human rights and democractic institutions in the short run. However, it is not necessarily the case that foreign aid can induce regime change towards democracy. Following Carnegie & Marinov, I utilize their instrumental variable regression analysis to find the relationship between EU foreign aid and regime type, based on the Democracy-Dictatorship classification. Based on the regression the impact of EU foreign aid does not have the strongest impact on shifting regimes towards democratic regimes.
+---
+
+[GitHub Repository](https://github.com/vinaysriram2/aqrd_finalpaper)
+
+# Introduction
+
+The international stage of politics demonstrates the mission of democratic nations to spread democratic values across the world, specifically in formerly colonized states. However, the question of the effectiveness in foreign aid to accomplish this goal is heavily contested. @carnegie_foreign_2017 demonstrate through an analysis of a natural experiment of European Union foreign aid, that foreign aid can be effective in promoting human rights and democratic institutions. However, the link between foreign aid and regime type remains a question. Given the geopolitical conditions of the modern world, the alignment of regime type plays a significant role in determining international cooperation. Therefore, this paper will extend the analysis of @carnegie_foreign_2017 to investigate the impact of the EU's foreign aid on regime type.
+
+# Literature Review
+
+The efficacy of foreign aid to promote democracy and human rights is widely contested. @carnegie_foreign_2017 argue that the European Union's model of foreign aid with political conditionality positively impacts human rights and democracy. However, given the uncertainty and inconsistency surrounding the EU's foreign aid allocation, these effects are only salient short term [@carnegie_foreign_2017]. The country that holds presidency of the EU during the budget setting period wields considerable influence on the allocation of foreign aid; state's tend to prioritize former colonies during this process. These trends in foreign aid allocation based on former colonial relationship have implications for the the EU's international agenda to promote democracy [@carnegie_foreign_2017; @raimundo_mapping_2014].
+
+Although, the EU's foreign policy for foreign aid prioritize concrete change with respect to human rights and democratic institutions, the type of regime of a state continues to shape international relations [@hyde_recapturing_2020]. Despite the fact that regime type does not sufficiently measure the enforcement of human rights, the simple fact of who holds the power in a state shapes international attitudes [@schwarz_paradox_2004]. Furthermore, given that exact measures of human rights and democracy are less salient than regime type, the EU values regime type as a measure, albeit perhaps a crude measure, of the success of its foreign policy. The EU's method of foreign aid negotiation invokes political conditionality to try and ensure their aid results in concrete change. While respect for human rights is often central in these negotiations, it can be hard to quantify[@molenaers_political_2015].
+
+@boix_complete_2013 explore the regime types of states over the past two centuries based on a six-point democracy-dictatorship classification. In this system, states are classified to one of six regime: parliamentary democracy, mixed democracy, presidential democracy, civilian dictatorship, military dictatorship, royal dictatorship. While this model does not imply that one type of dictatorship is worse than another, or that any type of democracy is superior, based on the EU's commitment to democracy and democratic values it likely favors democratic regime types over dictatorships [@boix_complete_2013]. Therefore, in this paper, I will investigate the link between EU foreign aid and regime type to identify the success of the EU's foreign aid on shifting regime type towards democratic regimes.
+
+# Analysis
+
+
+Following the model of @carnegie_foreign_2017, I will utilize an instrumental variable regression analysis to investigate the impact of EU foreign aid on human rights, democracy, and regime type. @carnegie_foreign_2017 restrict their analysis to the CIRI Human Empowerment Index and Polity IV Score, but I will also utilize the Democracy-Dictatorship classification system to investigate the effect on regime type. Although @carnegie_foreign_2017 perform their analysis during the time period of 1987-2006 due to confounding factors influencing foreign aid during the Cold-War era (pre 1987) and changes to the EU Presidency in 2007, this analysis is further restricted to the period of 1987 - 2004 due to data availability from the Democracy-Dictatorship Index (1800 - 2008). Although, regimes can quickly crumble in certain political conditions, the ability for foreign aid to shift regime structures is not an instant process, so regime type is 4-years lead to maintain the short term view of the analysis whilst still providing some time for the effect of foreign aid to take root.
+
+![Figure 1: Regime Types Over Time. Figure 1 displays the counts (4 years Lead) of each regime type from 1987 to 2004.](figures/Figure1.png){fig-align="center" width="559"}
+
+As Figure-1 demonstrates, the counts of each regime type during the period of interest (1987 - 2004) remains relatively stable. The number of presidential democracies seem to grow the most, whereas the number of civilian dictatorship and military dictatorship reduce. Given that foreign aid from the EU to each country varied during this time period based on which country held the EU presidency, there may be a link between the fluctuating aid and the fluctuating number of each regimes in the receiving countries.
+
+## Model Specification
+
+This paper utilizes the same first-stage set up as @carnegie_foreign_2017, because the effective randomness of EU presidency between 1987 and 2006 meets the exclusion and restriction principles necessary to preform this regression. Given that EU presidency is randomly assigned, whether or not a given country was a former colony of the current EU president is essentially random. @eq-1 shows that first-stage model links being a former colony ($Colony_{i(t-2)2}$) of the EU president during the budgetary period to increased foreign aid. Through utilizing a first-stage regression, the independent variable $\log(ODA)_{i(t-1)}$ (millions of log once-lagged dollars) is purged of endogeneity [@carnegie_foreign_2017].
+
+$$log(ODA)_{i(t-1)} = \gamma_{0}+ \gamma_{1}Colony_{i(t - 2)2} + \sum_{k \subset K}\gamma_{k}I(i = k) + \sum_{j \subset J}\gamma_{j}I(t = j) + \epsilon_{it},$$ {#eq-1}
+
+The main analysis captured by @eq-2 and @eq-3 demonstrate the link between democracy and human rights and regime type (respectively) with the predicted EU aid from the first-stage model. $DV_{it'}$ is a measure of rights and democracy based on the four-year averages (year t' \> t) of the polity IV score and CIRI human empowerment index, and $R_{i(t+4)}$ captures regime type four years lead [@carnegie_foreign_2017]. The indicator functions capture the fixed effects for country and year. Under the assumption, EU aid is randomly assigned, the coefficient $\beta_{1}$ predicts the marginal effect of a one log-unit increase in ODA. The proposed model takes advantage of an instrumental variable analysis to purge ODA of its endogeinity so we can take $\beta_{1}$ to show this effect on our dependent variables.
+
+$$DV_{it'} = \beta_{0}+ \beta_{1}log(ODA)_{i(t-1)} + \sum_{k \subset K}\beta_{k}I(i = k) + \sum_{j \subset J}\beta_{j}I(t = j) + \upsilon_{it},$$ {#eq-2}
+
+$$R_{i(t+4)} = \beta_{0}+ \beta_{1}log(ODA)_{i(t-1)} + \sum_{k \subset K}\beta_{k}I(i = k) + \sum_{j \subset J}\beta_{j}I(t = j) + \upsilon_{it},$$ {#eq-3}
+
+![Table 1: Descriptive Statistics. Table 1 displays the mean and standard deviation for the outcome variables, treatment variables, and relevant covariates (during the period of interest 1987-2004, across all countries of interest).](tables/table1.png){alt="Table 1: Descriptive Statistics. Table 1 displays the mean and standard deviation for the outcome variables, treatment variables, and relevant covariates (during the period of interest 1987-2004, across all countries of interest)." fig-align="center" width="502"}
+
+Table-1 shows the descriptive statistics for our variables of interests. The CIRI Human Empowerment Index aggregates 7 two point measures of human rights, so a score of 14 represents full government respect for rights. Given a mean of 7.78 and standard deviation of 3.78, there is clearly variation in this score for the countries of interest across the time period of analysis. The Polity IV measure ranges from -10 to 10, and a sample standard deviation of 6.41 also demonstrates significant variation in our sample for this measure [@carnegie_foreign_2017] . Each of the regime types, are binary indicators for the presence of that regime type based on the Democracy-Dictatorship classification [@boix_complete_2013]. Although these binary measures limit the nuance of analysis, the simplicity of these indicators maintain significant influence in international politics, so they to are important to investigate. EU Aid is measures in millions of log once-lagged dollars to capture the aid allocated during the budget setting period. Since the budget is determined two years in advanced, the indicator for colony status is twice lagged. The collection of covariates included in the regression are also displayed. Based on @boix_complete_2013, colony status is expected to have a statistically significant effect on aid, and the predicted aid from the first-stage model is expected to have a statistically significant effect of rights and democracy. While the link between aid and each regime type is not clear, it would make sense for there to a positive impact of aid on the democratic regimes, and a negative impact on dictatorships given the political conditionality of EU foreign aid.
+
+
+# Results
+
+The main results of the empirical investigation are captured by Model-1 and Model-2 which display the results of the regressions from @eq-2 and @eq-3. @carnegie_foreign_2017 demonstrate the robustness of the first-stage results from @eq-1, which this paper replicates. The main question this paper seeks to investigate is whether or not EU aid effects regime type in a similar way it affects rights and democracy.
+
+Both models span take data from 115 countries across 18 years (1987 - 2006). Model-2 accounts for covariates related to human rights and democracy: logged exports, logged imports, foreign direct investment (FDI), religioisty, petroleum imports (percent GDP), average education attainment, number of democracies in the region, logged GDP, logged GDP per capita and logged population. As @carnegie_foreign_2017 note due to the conditional random assignment of $Colony_{i(t-2)2}$), covariates are not required for estimator consistency, but their inclusion may limit sample variability. Country fixed effect (FE:ccode) and year fixed effects (FE:year) are also included for all regressions in both Model-1 and Model-2.
+
+![Model 1: Main Result of Instrumental Variable Regression (with covariates). The main regressions indicates the effect of predicted EU aid on human rights, democracy and regime type.](models/model1.png){fig-align="center"}
+
+Columns 1 and 2 of each model replicate @carnegie_foreign_2017 findings (albeit with a slightly different time range, for consistency with the data from the Democracy-Dictatorship index); nevertheless, the link between EU aid and these rights and democracy measures are clear: an increase in one log-unit of once-lagged millions of dollars of EU aid increases the scores in these indexes by 1-2 points.
+
+![Model 2: Main Result of Instrumental Variable Regression (with covariates). The main regressions indicates the effect of predicted EU aid on human rights, democracy and regime type.](models/model2.png){fig-align="center"}
+
+Columns 3-8, then display the main findings of this paper: the effect of an increase in one log-unit of once-lagged millions of dollars of EU aid on regime type. Given that regime type is a binary indicator, the results from row 1 in each of these columns from Model-1 and Model-2 demonstrate the effect of an increase in one log-unit of once-lagged millions of dollars of EU on the percentage points of the presence of each regime type (Lead 4 Years). The direction of the estimates from Model-1 and Model-2 are the same for each category; however, given that the inclusion of covariates may limit sampling variability, the analysis of the results will focus on the results from Model-2. Interestingly, EU aid has the strongest positive effect on civilian dictatorships (0.178 percentage points). Aid also has some positive effect on parliamentary democracy (0.070 percentage points) and mixed democracy (0.051 percentage points), which seems more consistent with our assumptions of the policy of EU foreign aid. There seems to be a minimal impact of EU foreign aid on royal dictatorships (0.004 percentage points). Finally, EU aid has a somewhat negative impact on presidential democracies (-0.029 percentage points) and a strong negative impact on military dictatorships (-0.274 percentage points).
+
+# Conclusion
+
+Given the clearly positive impact of EU foreign aid on human rights and democracy (based on the CIRI and Polity IV indices), it is surprisin that the strongest positive impact for regime type is that on civilian dictatorship. Given that regime type is a simple measure and cannot account for the existing variation in human rights and democratic institutions for each given regime type, it is unclear how the effects of EU aid on human rights and democracy dis-aggregate across each regime type. Based on the analysis of this paper, it would seem civilian dictatorship are consistent with the EU foreign policy values and military dictatorship are most in conflict with these goals. Supposing the EU has a vested interest in spreading democracy not just in the form of improving human rights and democratic institutions, but in ensuring democratic regime types internationally, their aid seems relatively inneffective in achieving this goal. While the measures of human rights and democracy are perhaps more relevant to the conditions of citizens within the recipient countries, the politics of foreign aid also takes into account the optics of regime type. Perhaps, the ability to influence human rights and democracy without changing regime type explains the positive relationship between EU aid and certain regime types, and only in cases they cannot achieve these goals they attempt to utilize aid to change regime type (particularly away from military dictatorships). Further investigation ought to investigate whether EU aid can positively impact human rights and democratic institutions within each regime type, specifically within civilian dictatorships given that EU aid seems to support this type of regime
+
+# References
+
+::: {#refs}
+:::
